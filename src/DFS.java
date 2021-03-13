@@ -33,10 +33,12 @@ public class DFS {
 
     public void search(String destination) {
         this.priorityList.add(source);
-        this.openedNodes.add(source);
+
 
         while (!priorityList.isEmpty()) {
             Node currentNode = priorityList.get(0);
+            System.out.println("Priority list: " + getPriorityListValues());
+            this.openedNodes.add(currentNode);
             if (currentNode.getValue() == destination) {
                 this.isFound = true;
                 break;
@@ -50,6 +52,14 @@ public class DFS {
         System.out.println();
         printOpenedNodes();
 
+    }
+
+    private String getPriorityListValues() {
+        String toReturn = "";
+        for (int i = 0; i < priorityList.size(); i++) {
+            toReturn += priorityList.get(i).getValue() + " ";
+        }
+        return toReturn;
     }
 
     private void addChildrenToPriorityList(Node currentNode) {
@@ -73,7 +83,7 @@ public class DFS {
         for (int i = 0; i < listOfChildren.length; i++) {
             if (!isOnPathToRoot(listOfChildren[i],currentNode)) {
                 Node newNode = new Node(listOfChildren[i], currentNode);
-                openedNodes.add(newNode);
+
             }
 
         }

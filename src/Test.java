@@ -12,8 +12,20 @@ public class Test {
         table.put("F", new String[]{"E", "G"});
         table.put("G", new String[]{"F"});
         table.put("S", new String[]{"A", "D"});
-        DFS dfs = new DFS(table,"S");
-        dfs.search("G");
 
+        //Depth First 1.0
+        System.out.println("DEPTH FIRST SEARCH WITH REPEATING NODES");
+        System.out.println("------------------------------------------");
+        DFS dfs = new DFS(table, "S");
+        dfs.search("G");
+        System.out.println("------------------------------------------");
+        System.out.println();
+        System.out.println();
+        //Depth First 1.0
+        System.out.println("DEPTH FIRST SEARCH WITHOUT REPEATING NODES");
+        System.out.println("------------------------------------------");
+        DFS2 dfs2 = new DFS2(table, "S");
+        dfs2.search("G");
+        System.out.println("------------------------------------------");
     }
 }

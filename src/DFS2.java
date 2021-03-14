@@ -2,16 +2,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class DFS {
+public class DFS2 {
     private ArrayList<Node> visitedNodes;
+    private ArrayList<String> openedNodes;
     private HashMap<String, String[]> table;
     private ArrayList<Node> priorityList;
     private Node source;
     private boolean isFound;
 
-    public DFS(HashMap<String, String[]> table, String source) {
+    public DFS2(HashMap<String, String[]> table, String source) {
         this.visitedNodes = new ArrayList<>();
-
+        this.openedNodes = new ArrayList<>();
         this.table = table;
         this.priorityList = new ArrayList<>();
         this.source = new Node(source, null);
@@ -26,6 +27,7 @@ public class DFS {
         this.visitedNodes = new ArrayList<>();
         this.priorityList = new ArrayList<>();
         this.isFound = false;
+        this.openedNodes = new ArrayList<>();
     }
 
     public void reset(String source) {
@@ -35,7 +37,7 @@ public class DFS {
 
     public void search(String destination) {
         this.priorityList.add(source);
-
+        this.openedNodes.add(source.getValue());
 
         while (!priorityList.isEmpty()) {
             Node currentNode = priorityList.get(0);
@@ -109,9 +111,9 @@ public class DFS {
             return;
         }
         for (int i = 0; i < listOfChildren.length; i++) {
-            if (!isOnPathToRoot(listOfChildren[i], currentNode)) {
+            if (!openedNodes.contains(listOfChildren[i])) {
                 Node newNode = new Node(listOfChildren[i], currentNode);
-
+                openedNodes.add(newNode.getValue());
             }
 
         }

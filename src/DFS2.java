@@ -3,12 +3,17 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class DFS2 {
+    private final int MAX_ITERATIONS = 30;
     private ArrayList<Node> visitedNodes;
     private ArrayList<String> openedNodes;
     private HashMap<String, String[]> table;
     private ArrayList<Node> priorityList;
     private Node source;
     private boolean isFound;
+    private int currentIteration;
+    private int depth;
+    private ArrayList<Integer> depthValues;
+
 
     public DFS2(HashMap<String, String[]> table, String source) {
         this.visitedNodes = new ArrayList<>();
@@ -17,6 +22,10 @@ public class DFS2 {
         this.priorityList = new ArrayList<>();
         this.source = new Node(source, null);
         this.isFound = false;
+        this.currentIteration = 0;
+        this.depth = 0;
+
+
     }
 
     public void setSource(Node source) {
@@ -36,28 +45,65 @@ public class DFS2 {
     }
 
     public void search(String destination) {
-        this.priorityList.add(source);
-        this.openedNodes.add(source.getValue());
 
-        while (!priorityList.isEmpty()) {
-            Node currentNode = priorityList.get(0);
-            System.out.println("Priority list: " + getPriorityListValues());
-            this.visitedNodes.add(currentNode);
-            if (currentNode.getValue().equals(destination)) {
-                this.isFound = true;
-                break;
-            } else {
-                openChildren(currentNode);
-                this.priorityList.remove(0);
-                addChildrenToPriorityList(currentNode);
+        while (!isFound && currentIteration < MAX_ITERATIONS) {
+            depth = 0;
+            System.out.println();
+            System.out.println("Iteration " + currentIteration + ": ");
+            this.source = new Node(this.source.getValue(),null);
+            this.priorityList.add(source);
+            this.openedNodes.add(source.getValue());
+
+            while (!priorityList.isEmpty()) {
+                Node currentNode = priorityList.get(0);
+                System.out.println("Priority list: " + getPriorityListValues());
+                this.visitedNodes.add(currentNode);
+                if (currentNode.getValue().equals(destination)) {
+                    this.isFound = true;
+                    break;
+                } else {
+                    depth = countDepth(currentNode);
+                    if (depth < currentIteration) {
+                        openChildren(currentNode);
+
+                    }
+
+                    this.priorityList.remove(0);
+                    addChildrenToPriorityList(currentNode);
+                }
             }
+
+
+
+            printVisitedNodes();
+            printOpenedNodes();
+            if(visitedNodes.size() == table.keySet().size())
+                break;
+            openedNodes = new ArrayList<>();
+            visitedNodes = new ArrayList<>();
+            currentIteration++;
         }
+
+
         System.out.println();
-        System.out.println(isFound ? "Found" : "Not found");
-        System.out.println();
-        printVisitedNodes();
-        System.out.println();
-        printPath();
+        if (isFound) {
+            System.out.println("Destination found after " + (currentIteration + 1) + " iterations");
+            printPath();
+        } else {
+            System.out.println("Destination not found after " + (currentIteration + 1) + " iterations");
+        }
+
+
+    }
+
+    private int countDepth(Node currentNode) {
+        int currentDepth = 0;
+        Node parent = currentNode.getParent();
+        while (parent != null) {
+            currentDepth++;
+            parent = parent.getParent();
+        }
+        return currentDepth;
     }
 
     private void printPath() {
@@ -97,9 +143,13 @@ public class DFS2 {
         if (currentNode.getChildren().isEmpty()) {
             return;
         } else {
+
+
             for (Node child : currentNode.getChildren()) {
+
                 newList.add(child);
             }
+
             newList.addAll(this.priorityList);
             this.priorityList = newList;
         }
@@ -130,8 +180,16 @@ public class DFS2 {
     }
 
     public void printVisitedNodes() {
+        System.out.println("Visited nodes step by step: ");
         for (int i = 0; i < visitedNodes.size(); i++) {
             System.out.printf("%-4s%s%n", (i + 1) + ".", this.visitedNodes.get(i).getValue());
+        }
+    }
+
+    public void printOpenedNodes() {
+        System.out.println("Opened node nodes step by step: ");
+        for (int i = 0; i < openedNodes.size(); i++) {
+            System.out.printf("%-4s%s%n", (i + 1) + ".", this.openedNodes.get(i));
         }
     }
 

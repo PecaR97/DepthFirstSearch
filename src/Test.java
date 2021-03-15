@@ -13,14 +13,14 @@ public class Test {
         table.put("G", new String[]{"F"});
         table.put("S", new String[]{"A", "D"});
 
-        //Depth First 1.0
+        /*//Depth First 1.0
         System.out.println("DEPTH FIRST SEARCH WITH REPEATING NODES");
         System.out.println("------------------------------------------");
         DFS dfs = new DFS(table, "S");
         dfs.search("G");
         System.out.println("------------------------------------------");
         System.out.println();
-        System.out.println();
+        System.out.println();*/
         //Depth First 1.0
         System.out.println("DEPTH FIRST SEARCH WITHOUT REPEATING NODES");
         System.out.println("------------------------------------------");
